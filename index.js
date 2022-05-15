@@ -6,6 +6,7 @@ var logger = require('morgan');
 const bcrypt = require('bcrypt');
 var mongoose = require('mongoose');
 var apiRouter = require('./routers/api');
+var cors = require('cors')
 const  dbURI = "mongodb+srv://zain:cmX84A6ragK4h0XI@cluster0.yoddb.mongodb.net/hotels?retryWrites=true&w=majority";
 //const dbURI = "mongodb://localhost:27017/hotels";
 mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true });
@@ -16,7 +17,7 @@ dbConn.once("open", () => { console.log("DB started successfully") });
 
 
 var app = express();
-
+app.use(cors())
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
