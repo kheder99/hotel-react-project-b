@@ -156,17 +156,17 @@ router.get('/hotels', auth.authenticateToken, async (req, res) => {
     crud.readMany(req, res, db.hotels);
 });
 
-router.post('/hotels', auth.authenticateToken, uploadImage.fields([{
-    name: 'image', maxCount: 10
-}]), async (req, res) => {
+router.post('/hotels', auth.authenticateToken, uploadImage.array('images[]', 12), async (req, res) => {
     try {
         const { name, description,services,images, tags } = req.body;
 
         console.log(req.body);
         console.log(req.files);
         if (req.files) {
-            let img = req.files.image[0];
-            let images = ['/imgs/' + img.filename];
+            let img = req.files;
+            console.log(img)
+            let images = [];
+            img.map(v=>images.push('/imgs/' + v.filename));
             req.body.images = images;
             req.body.rate = 1;
             crud.create(req, res, db.hotels);
@@ -212,13 +212,13 @@ router.delete('/hotels/:_id', auth.authenticateToken, async (req, res) => {
 
 router.get('/rates/:hotel', auth.authenticateToken, async (req, res) => {
     id= mongoose.Types.ObjectId(req.params.hotel);
-    crud.readMany(req, res, db.categories,{hotel:id});
+    crud.readMany(req, res, db.rate,{hotel:id});
 });
 
 router.post('/rates', auth.authenticateToken,  async (req, res) => {
     try {
         console.log(req.body);
-        crud.create(req, res, db.categories);
+        crud.create(req, res, db.rate);
 
     } catch (e) {
         
