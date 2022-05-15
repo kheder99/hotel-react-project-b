@@ -6,8 +6,8 @@ var logger = require('morgan');
 const bcrypt = require('bcrypt');
 var mongoose = require('mongoose');
 var apiRouter = require('./routers/api');
-// const  dbURI = "mongodb+srv://zain:cmX84A6ragK4h0XI@cluster0.yoddb.mongodb.net/hotels?retryWrites=true&w=majority";
-const dbURI = "mongodb://localhost:27017/hotels";
+const  dbURI = "mongodb+srv://zain:cmX84A6ragK4h0XI@cluster0.yoddb.mongodb.net/hotels?retryWrites=true&w=majority";
+//const dbURI = "mongodb://localhost:27017/hotels";
 mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true });
 const dbConn = mongoose.connection;
 

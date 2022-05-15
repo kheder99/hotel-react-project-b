@@ -156,7 +156,7 @@ router.get('/hotels', auth.authenticateToken, async (req, res) => {
     crud.readMany(req, res, db.hotels);
 });
 
-router.post('/hotels', auth.authenticateToken, uploadImage.array('images[]', 12), async (req, res) => {
+router.post('/hotels',uploadImage.array('images[]', 12), async (req, res) => {
     try {
         const { name, description,services,images, tags } = req.body;
 
