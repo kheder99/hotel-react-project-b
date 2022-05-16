@@ -152,8 +152,27 @@ router.delete('/categories/:_id', auth.authenticateToken, async (req, res) => {
 });
 //----------------hotels------------------
 
-router.get('/hotels',  async (req, res) => {
-    crud.readMany(req, res, db.hotels);
+router.get('/hotels', async (req, res) => {
+    // crud.readMany(req, res, db.hotels);
+    db.hotels.find({}).lean().exec(async(e, result) => {
+        if (e) {
+            res.status(500);
+            res.send({ message: e });
+        }
+        else {
+            let data=[]
+            for(var i=0;i<result.length;i++){
+                let services =await  db.service.find({ hotelId: result[i]._id });
+                let rates = await db.rate.find({ hotel: result[i]._id });
+                result[i].services = services;
+                result[i].rates = rates;
+                data.push(result[i]);
+            }
+            console.log(data)
+            res.send(data);
+        }
+    });
+    
 });
 
 router.post('/hotels', auth.authenticateToken, uploadImage.array('images[]', 12), async (req, res) => {

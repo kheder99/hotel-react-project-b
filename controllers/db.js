@@ -41,6 +41,10 @@ const hotels = new schema({
     type: schema.Types.ObjectId,
     ref: "Categories"
   },
+  // services: {
+  //   type: [schema.Types.ObjectId],
+  //   ref: "Service"
+  // },
   edit_date: { type: Date, default: Date.now },
   rate: {
     type: Number,
@@ -74,6 +78,10 @@ const rate = new schema({
 
 const service = new schema({
   name: { type: String, unique: true, required: true },
+  hotelId: {
+    type: schema.Types.ObjectId,
+    ref: "Hotel"
+  },
   images: [String],
   description: String,
   edit_date: { type: Date, default: Date.now },
