@@ -24,10 +24,7 @@ const user = new schema({
   image: String,
 });
 
-const categories = new schema({
-  name: { type: String, unique: true, required: true },
-  image: String,
-});
+
 
 const hotels = new schema({
   user: {
@@ -37,14 +34,6 @@ const hotels = new schema({
   name: { type: String, unique: true, required: true },
   images: [String],
   description: String,
-  category: {
-    type: schema.Types.ObjectId,
-    ref: "Categories"
-  },
-  // services: {
-  //   type: [schema.Types.ObjectId],
-  //   ref: "Service"
-  // },
   edit_date: { type: Date, default: Date.now },
   rate: {
     type: Number,
@@ -62,10 +51,6 @@ const rate = new schema({
     type: schema.Types.ObjectId,
     ref: "Hotel"
   },
-  service: {
-    type: schema.Types.ObjectId,
-    ref: "Service"
-  },
   comment: String,
   rate: {
     type: Number,
@@ -77,12 +62,12 @@ const rate = new schema({
 
 
 const service = new schema({
-  name: { type: String, unique: true, required: true },
+  name: { type: String, required: true },
   hotelId: {
     type: schema.Types.ObjectId,
-    ref: "Hotel"
+    ref: "Hotel",
+    required: true 
   },
-  images: [String],
   description: String,
   edit_date: { type: Date, default: Date.now },
   rate: {
@@ -95,14 +80,12 @@ const service = new schema({
 
 
 const User = mongoose.model('User', user);
-const Categories = mongoose.model('Categories', categories);
 const Hotels = mongoose.model('Hotels', hotels);
 const Service = mongoose.model('Service', service);
 const Rate = mongoose.model('Rate', rate);
 
 module.exports = {
   users: User,
-  categories: Categories,
   hotels: Hotels,
   service: Service,
   rate: Rate
