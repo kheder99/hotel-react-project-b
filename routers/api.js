@@ -169,7 +169,7 @@ router.put('/hotels', auth.authenticateToken, uploadImage.single('image'), async
         if (req.user.isAdmin) {
             var active = true;
             var image = '/imgs/' + req.file.filename;
-            edited_cat = await db.hotels.findByIdAndUpdate(ct_id, { name: name, image: image, active: active },);
+            let edited_cat = await db.hotels.findByIdAndUpdate(ct_id, { name: name, image: image, active: active },);
             res.status(200);
             res.send({ Message: "Done" });
         }
@@ -191,7 +191,7 @@ router.delete('/hotels/:_id', auth.authenticateToken, async (req, res) => {
 //------------------------rates----------------------------------
 
 router.get('/rates/:hotel', auth.authenticateToken, async (req, res) => {
-    id = mongoose.Types.ObjectId(req.params.hotel);
+    let id = mongoose.Types.ObjectId(req.params.hotel);
     crud.readMany(req, res, db.rate, { hotel: id });
 });
 
@@ -213,7 +213,7 @@ router.put('/rates', auth.authenticateToken, async (req, res) => {
     try {
         var id = mongoose.Types.ObjectId(req.body._id);
         if (req.user.role == 'Admin' || req.user._id == req.body.user) {
-            edited_cat = await db.rate.findByIdAndUpdate(id, req.body);
+            let edited_cat = await db.rate.findByIdAndUpdate(id, req.body);
             res.status(200);
             res.send({ Message: "Done" });
         }
@@ -233,7 +233,7 @@ router.delete('/rates/:_id', auth.authenticateToken, async (req, res) => {
 });
 //------------------------------------services----------------------
 router.get('/services/:hotel', auth.authenticateToken, async (req, res) => {
-    id = mongoose.Types.ObjectId(req.params.hotel);
+    let id = mongoose.Types.ObjectId(req.params.hotel);
     crud.readMany(req, res, db.rate, { hotel: id });
 });
 
@@ -255,7 +255,7 @@ router.put('/services', auth.authenticateToken, async (req, res) => {
     try {
         var id = mongoose.Types.ObjectId(req.body._id);
         if (req.user.role == 'Admin' || req.user._id == req.body.user) {
-            edited_cat = await db.service.findByIdAndUpdate(id, req.body);
+            let edited_cat = await db.service.findByIdAndUpdate(id, req.body);
             res.status(200);
             res.send({ Message: "Done" });
         }
@@ -275,7 +275,7 @@ router.delete('/services/:_id', auth.authenticateToken, async (req, res) => {
 });
 //----------------------Booking----------------
 router.get('/booking', auth.authenticateToken, async (req, res) => {
-    id = mongoose.Types.ObjectId(req.user.id);
+    let id = mongoose.Types.ObjectId(req.user.id);
     crud.readMany(req, res, db.booking, { user: id });
 });
 router.post('/booking/', auth.authenticateToken, async (req, res) => {
