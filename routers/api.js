@@ -123,9 +123,9 @@ router.get('/hotels', async (req, res) => {
                 for(var j=0;j<hrate.length;j++){
                     r+=hrate[j].total;
                 }
-                console.log(hrate);
+                console.log(r);
                 result[i].services = services;
-                result[i].rate = r/(hrate.length+1);
+                result[i].rate = r/(hrate.length);
                 result[i].rates = rates;
                 data.push(result[i]);
             }
