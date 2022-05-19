@@ -273,4 +273,25 @@ router.put('/services', auth.authenticateToken, async (req, res) => {
 router.delete('/services/:_id', auth.authenticateToken, async (req, res) => {
     crud.delete(req, res, db.service);
 });
+//----------------------Booking----------------
+router.get('/booking', auth.authenticateToken, async (req, res) => {
+    id = mongoose.Types.ObjectId(req.user.id);
+    crud.readMany(req, res, db.booking, { user: id });
+});
+router.post('/booking/', auth.authenticateToken, async (req, res) => {
+    try {
+        console.log(req.body);
+        let uid=req.user._id;
+        req.body.user=uid;
+        crud.create(req, res, db.booking);
+    } catch (e) {
+
+        console.log(e);
+        res.status(500);
+        res.send({ error: e.Message });
+    }
+});
+router.delete('/booking/:_id', auth.authenticateToken, async (req, res) => {
+    crud.delete(req, res, db.booking);
+});
 module.exports = router;

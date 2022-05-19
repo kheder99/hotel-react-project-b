@@ -58,7 +58,20 @@ const rate = new schema({
     enum: [0, 1, 2, 3, 4, 5]
   },
 
-})
+});
+
+const booking = new schema({
+  user: {
+    type: schema.Types.ObjectId,
+    ref: "User"
+  },
+  hotel: {
+    type: schema.Types.ObjectId,
+    ref: "Hotel"
+  },
+  description: String,
+  created_date: { type: Date, default: Date.now },
+});
 
 
 const service = new schema({
@@ -83,10 +96,12 @@ const User = mongoose.model('User', user);
 const Hotels = mongoose.model('Hotels', hotels);
 const Service = mongoose.model('Service', service);
 const Rate = mongoose.model('Rate', rate);
+const Booking = mongoose.model('Booking', booking);
 
 module.exports = {
   users: User,
   hotels: Hotels,
   service: Service,
-  rate: Rate
+  rate: Rate,
+  booking:Booking
 }
