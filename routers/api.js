@@ -276,7 +276,22 @@ router.delete('/services/:_id', auth.authenticateToken, async (req, res) => {
 //----------------------Booking----------------
 router.get('/booking', auth.authenticateToken, async (req, res) => {
     let id = mongoose.Types.ObjectId(req.user.id);
-    crud.readMany(req, res, db.booking, { user: id });
+    // crud.readMany(req, res, db.booking, { user: id });
+     db.booking.find({user:id}).lean().exec(async(e,result) => {
+        let data=[]
+        if(e) {
+          console.log(e);
+          res.status(500);
+          res.send({ message: e.message });
+        } else {
+        for(var i=0;i<result.length;i++){
+            let hotel =await  db.hotels.findById( result[i].hotel );
+            result[i].hotel=hotel.name;
+            data.push(result[i]);
+        }
+          res.send(data);
+        }
+      });
 });
 router.post('/booking/', auth.authenticateToken, async (req, res) => {
     try {
