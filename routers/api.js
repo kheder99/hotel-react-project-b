@@ -229,7 +229,7 @@ router.put('/rates', auth.authenticateToken, async (req, res) => {
 });
 
 router.delete('/rates/:_id', auth.authenticateToken, async (req, res) => {
-    crud.delete(req, res, db.rate);
+    crud.remove(req, res, db.rate);
 });
 //------------------------------------services----------------------
 router.get('/services/:hotel', auth.authenticateToken, async (req, res) => {
@@ -271,7 +271,7 @@ router.put('/services', auth.authenticateToken, async (req, res) => {
 });
 
 router.delete('/services/:_id', auth.authenticateToken, async (req, res) => {
-    crud.delete(req, res, db.service);
+    crud.remove(req, res, db.service);
 });
 //----------------------Booking----------------
 router.get('/booking', auth.authenticateToken, async (req, res) => {
@@ -307,6 +307,6 @@ router.post('/booking/', auth.authenticateToken, async (req, res) => {
     }
 });
 router.delete('/booking/:_id', auth.authenticateToken, async (req, res) => {
-    crud.delete(req, res, db.booking);
+    crud.remove(req, res, db.booking);
 });
 module.exports = router;
