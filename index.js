@@ -8,7 +8,8 @@ var mongoose = require('mongoose');
 var apiRouter = require('./routers/api');
 var cors = require('cors')
 // const  dbURI = "mongodb+srv://zain:cmX84A6ragK4h0XI@cluster0.yoddb.mongodb.net/hotels?retryWrites=true&w=majority";
-const  dbURI = "mongodb+srv://khederibrahem99:0SGZwIPqRJEL9Q2C@cluster0.l7jdw.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
+// const  dbURI = "mongodb+srv://khederibrahem99:0SGZwIPqRJEL9Q2C@cluster0.l7jdw.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
+const dbURI = "mongodb+srv://khederibrahem99:vDb0cs4dBpk4AWzP@cluster0.l7jdw.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
 //const dbURI = "mongodb://localhost:27017/hotels";
 mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true });
 const dbConn = mongoose.connection;
