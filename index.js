@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 var createError = require("http-errors");
 var express = require("express");
 var path = require("path");
@@ -9,7 +8,7 @@ var mongoose = require("mongoose");
 var apiRouter = require("./routers/api");
 // const  dbURI = "mongodb+srv://zain:cmX84A6ragK4h0XI@cluster0.yoddb.mongodb.net/hotels?retryWrites=true&w=majority";
 const dbURI = process.env.MONGODB_URI;
-  // "mongodb+srv://khederibrahem99:0SGZwIPqRJEL9Q2C@cluster0.l7jdw.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
+// "mongodb+srv://khederibrahem99:0SGZwIPqRJEL9Q2C@cluster0.l7jdw.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
 // const dbURI = "mongodb://localhost:27017/hotels";
 mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true });
 const dbConn = mongoose.connection;
@@ -34,41 +33,35 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use("/api", apiRouter);
 
 app.listen(process.env.PORT || "3000", console.log("listining to port 3000"));
-=======
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
-const bcrypt = require('bcrypt');
-var mongoose = require('mongoose');
-var apiRouter = require('./routers/api');
-var cors = require('cors')
-// const  dbURI = "mongodb+srv://zain:cmX84A6ragK4h0XI@cluster0.yoddb.mongodb.net/hotels?retryWrites=true&w=majority";
-// const  dbURI = "mongodb+srv://khederibrahem99:0SGZwIPqRJEL9Q2C@cluster0.l7jdw.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
-const dbURI = "mongodb+srv://khederibrahem99:vDb0cs4dBpk4AWzP@cluster0.l7jdw.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
-//const dbURI = "mongodb://localhost:27017/hotels";
-mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true });
-const dbConn = mongoose.connection;
+// var createError = require('http-errors');
+// var express = require('express');
+// var path = require('path');
+// var cookieParser = require('cookie-parser');
+// var logger = require('morgan');
+// const bcrypt = require('bcrypt');
+// var mongoose = require('mongoose');
+// var apiRouter = require('./routers/api');
+// var cors = require('cors')
+// // const  dbURI = "mongodb+srv://zain:cmX84A6ragK4h0XI@cluster0.yoddb.mongodb.net/hotels?retryWrites=true&w=majority";
+// // const  dbURI = "mongodb+srv://khederibrahem99:0SGZwIPqRJEL9Q2C@cluster0.l7jdw.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
+// const dbURI = "mongodb+srv://khederibrahem99:vDb0cs4dBpk4AWzP@cluster0.l7jdw.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
+// //const dbURI = "mongodb://localhost:27017/hotels";
+// mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true });
+// const dbConn = mongoose.connection;
 
-dbConn.on("error", (err) => { console.error(err) });
-dbConn.once("open", () => { console.log("DB started successfully") });
+// dbConn.on("error", (err) => { console.error(err) });
+// dbConn.once("open", () => { console.log("DB started successfully") });
 
+// var app = express();
+// app.use(cors())
+// app.use(logger('dev'));
+// app.use(express.json());
+// app.use(express.urlencoded({ extended: false }));
+// app.use(cookieParser());
+// app.use(express.static(path.join(__dirname, 'public')));
+// // app.use(passport.initialize());
+// // app.use(passport.session());
 
-var app = express();
-app.use(cors())
-app.use(logger('dev'));
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
-// app.use(passport.initialize());
-// app.use(passport.session());
+// app.use('/api', apiRouter);
 
-
-app.use('/api', apiRouter);
-
-
-
-app.listen(process.env.PORT || '3000', console.log("listining to port 3000"));
->>>>>>> 7292a7bb72881106dacfc1257cc28c07b9bb546c
+// app.listen(process.env.PORT || '3000', console.log("listining to port 3000"));
