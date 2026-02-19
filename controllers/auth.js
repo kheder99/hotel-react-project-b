@@ -7,7 +7,11 @@ dotenv.config();
 process.env.TOKEN_SECRET;
 
 const generateAccessToken = function (username, password) {
+<<<<<<< HEAD
   return jwt.sign({ email: username, password: password }, process.env.TOKEN_SECRET, { expiresIn: '1d' });
+=======
+  return jwt.sign({ email: username, password: password }, process.env.TOKEN_SECRET, { expiresIn: '30d' });
+>>>>>>> 7292a7bb72881106dacfc1257cc28c07b9bb546c
 }
 const authenticateToken = async (req, res, next) => {
   console.log(req.headers);
