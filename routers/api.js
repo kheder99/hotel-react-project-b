@@ -5,17 +5,24 @@ const auth = require("../controllers/auth");
 const crud = require("../controllers/crud");
 const bcrypt = require("bcrypt");
 const mongoose = require("mongoose");
-const multer = require("multer");
+const cloudinary = require("../config/cloudinary");
 const { json } = require("express");
-var imageStorage = multer.diskStorage({
-  destination: function (req, file, callback) {
-    callback(null, "public/imgs/");
-  },
-  filename: function (req, file, callback) {
-    callback(null, file.originalname);
-  },
-});
-const uploadImage = multer({ storage: imageStorage });
+
+// image in public/imgs stored
+
+// var imageStorage = multer.diskStorage({
+//   destination: function (req, file, callback) {
+//     callback(null, "public/imgs/");
+//   },
+//   filename: function (req, file, callback) {
+//     callback(null, file.originalname);
+//   },
+// });
+// const uploadImage = multer({ storage: imageStorage });
+
+const multer = require("multer");
+const upload = multer({ storage: multer.memoryStorage() });
+const uploadImage = require("../controllers/upload");
 
 /* GET home page. */
 router.get("/", function (req, res, next) {
@@ -137,64 +144,150 @@ router.get("/hotels", async (req, res) => {
       }
     });
 });
+// this add images in public/imgs
+// router.post(
+//   "/hotels",
+//   auth.authenticateToken,
+//   uploadImage.array("images[]", 12),
+//   async (req, res) => {
+//     try {
+//       const { name, description, services, images, tags } = req.body;
 
+//       console.log(req.body);
+//       console.log(req.files);
+//       if (req.files) {
+//         let img = req.files;
+//         console.log(img);
+//         let images = [];
+//         img.map((v) => images.push("/imgs/" + v.filename));
+//         req.body.images = images;
+//         req.body.rate = 1;
+//         crud.create(req, res, db.hotels);
+//       } else {
+//         req.body.images = images;
+//         req.body.rate = 1;
+//         crud.create(req, res, db.hotels);
+//       }
+//     } catch (e) {
+//       console.log(e);
+//       res.status(500);
+//       res.send({ error: e.Message });
+//     }
+//   },
+// );
+
+//the new add hotel
 router.post(
   "/hotels",
   auth.authenticateToken,
-  uploadImage.array("images[]", 12),
+  upload.array("images[]", 12),
   async (req, res) => {
     try {
-      const { name, description, services, images, tags } = req.body;
+      const { name, description, services, tags } = req.body;
+      const hotelData = { name, description, services, tags, rate: 1 };
 
-      console.log(req.body);
-      console.log(req.files);
-      if (req.files) {
-        let img = req.files;
-        console.log(img);
-        let images = [];
-        img.map((v) => images.push("/imgs/" + v.filename));
-        req.body.images = images;
-        req.body.rate = 1;
-        crud.create(req, res, db.hotels);
-      } else {
-        req.body.images = images;
-        req.body.rate = 1;
-        crud.create(req, res, db.hotels);
+      if (req.files && req.files.length > 0) {
+        const uploadedImages = [];
+
+        for (const file of req.files) {
+          const streamUpload = () => {
+            return new Promise((resolve, reject) => {
+              const stream = cloudinary.uploader.upload_stream(
+                { folder: "hotels" },
+                (error, result) => {
+                  if (error) reject(error);
+                  else resolve(result.secure_url);
+                },
+              );
+              stream.end(file.buffer);
+            });
+          };
+
+          const url = await streamUpload();
+          uploadedImages.push(url);
+        }
+
+        hotelData.images = uploadedImages;
       }
+
+      await crud.create({ body: hotelData }, res, db.hotels);
     } catch (e) {
-      console.log(e);
-      res.status(500);
-      res.send({ error: e.Message });
+      console.error(e);
+      res.status(500).send({ error: e.message });
     }
   },
 );
+// old update
+// router.put(
+//   "/hotels",
+//   auth.authenticateToken,
+//   uploadImage.single("image"),
+//   async (req, res) => {
+//     const { cat_id, name, description, tags } = req.body;
+//     try {
+//       var ct_id = mongoose.Types.ObjectId(cat_id);
+//       if (req.user.isAdmin) {
+//         var active = true;
+//         var image = "/imgs/" + req.file.filename;
+//         let edited_cat = await db.hotels.findByIdAndUpdate(ct_id, {
+//           name: name,
+//           image: image,
+//           active: active,
+//         });
+//         res.status(200);
+//         res.send({ Message: "Done" });
+//       } else {
+//         res.status(403);
+//         res.send({ error: "you are not admin" });
+//       }
+//     } catch (e) {
+//       console.log(e);
+//       res.status(500);
+//       res.send({ error: e.Message });
+//     }
+//   },
+// );
 
+//the new update
 router.put(
   "/hotels",
   auth.authenticateToken,
-  uploadImage.single("image"),
+  upload.single("image"),
   async (req, res) => {
     const { cat_id, name, description, tags } = req.body;
     try {
-      var ct_id = mongoose.Types.ObjectId(cat_id);
-      if (req.user.isAdmin) {
-        var active = true;
-        var image = "/imgs/" + req.file.filename;
-        let edited_cat = await db.hotels.findByIdAndUpdate(ct_id, {
-          name: name,
-          image: image,
-          active: active,
-        });
-        res.status(200);
-        res.send({ Message: "Done" });
-      } else {
-        res.status(403);
-        res.send({ error: "you are not admin" });
+      const ct_id = mongoose.Types.ObjectId(cat_id);
+
+      if (!req.user.isAdmin) {
+        return res.status(403).send({ error: "You are not admin" });
       }
+
+      let updateData = { name, description, tags };
+
+      if (req.file) {
+        // رفع الصورة لـ Cloudinary
+        const streamUpload = () =>
+          new Promise((resolve, reject) => {
+            const stream = cloudinary.uploader.upload_stream(
+              { folder: "hotels" },
+              (error, result) => {
+                if (error) reject(error);
+                else resolve(result.secure_url);
+              },
+            );
+            stream.end(req.file.buffer);
+          });
+
+        const imageUrl = await streamUpload();
+        updateData.image = imageUrl;
+      }
+
+      await db.hotels.findByIdAndUpdate(ct_id, updateData);
+
+      res.status(200).send({ message: "Hotel updated successfully" });
     } catch (e) {
-      console.log(e);
-      res.status(500);
-      res.send({ error: e.Message });
+      console.error(e);
+      res.status(500).send({ error: e.message });
     }
   },
 );
