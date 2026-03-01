@@ -15,13 +15,7 @@ let cached = global.mongoose;
 if (!cached) {
   cached = global.mongoose = { conn: null, promise: null };
 }
-// #region agent log
-fetch("http://127.0.0.1:7760/ingest/3f9c3337-dab9-4ddc-a905-eaadd0d240fd",{method:"POST",headers:{"Content-Type":"application/json","X-Debug-Session-Id":"7e3d18"},body:JSON.stringify({sessionId:"7e3d18",runId:"pre-fix",hypothesisId:"H1",location:"index.js:module-init",message:"Root module initialized",data:{nodeEnv:process.env.NODE_ENV || null,hasModuleExports:typeof module !== "undefined"},timestamp:Date.now()})}).catch(()=>{});
-// #endregion
 async function connectDB() {
-  // #region agent log
-  fetch("http://127.0.0.1:7760/ingest/3f9c3337-dab9-4ddc-a905-eaadd0d240fd",{method:"POST",headers:{"Content-Type":"application/json","X-Debug-Session-Id":"7e3d18"},body:JSON.stringify({sessionId:"7e3d18",runId:"pre-fix",hypothesisId:"H3",location:"index.js:connectDB-entry",message:"connectDB invoked",data:{hasCachedConn:Boolean(cached.conn),hasCachedPromise:Boolean(cached.promise)},timestamp:Date.now()})}).catch(()=>{});
-  // #endregion
   if (cached.conn) return cached.conn;
   if (!cached.promise) {
     cached.promise = mongoose
@@ -59,9 +53,6 @@ app.use(
 );
 
 app.get("/", (req, res) => {
-  // #region agent log
-  fetch("http://127.0.0.1:7760/ingest/3f9c3337-dab9-4ddc-a905-eaadd0d240fd",{method:"POST",headers:{"Content-Type":"application/json","X-Debug-Session-Id":"7e3d18"},body:JSON.stringify({sessionId:"7e3d18",runId:"post-fix",hypothesisId:"H5",location:"index.js:root-route",message:"Root route served",data:{method:req?.method || null,url:req?.originalUrl || req?.url || null},timestamp:Date.now()})}).catch(()=>{});
-  // #endregion
   res.status(200).json({ message: "Hotels API is running", docs: "/api" });
 });
 
@@ -70,9 +61,6 @@ app.use("/api", apiRouter);
 // app.listen(process.env.PORT || "3000", console.log("listining to port 3000"));
 
 app.use((req, res, next) => {
-  // #region agent log
-  fetch("http://127.0.0.1:7760/ingest/3f9c3337-dab9-4ddc-a905-eaadd0d240fd",{method:"POST",headers:{"Content-Type":"application/json","X-Debug-Session-Id":"7e3d18"},body:JSON.stringify({sessionId:"7e3d18",runId:"post-fix",hypothesisId:"H7",location:"index.js:not-found-middleware",message:"Request reached 404 middleware",data:{method:req?.method || null,url:req?.originalUrl || req?.url || null},timestamp:Date.now()})}).catch(()=>{});
-  // #endregion
   res.status(404).send({ error: "Route not found" });
 });
 
@@ -95,9 +83,6 @@ if (process.env.NODE_ENV !== "production") {
 }
 
 async function serverlessHandler(req, res) {
-  // #region agent log
-  fetch("http://127.0.0.1:7760/ingest/3f9c3337-dab9-4ddc-a905-eaadd0d240fd",{method:"POST",headers:{"Content-Type":"application/json","X-Debug-Session-Id":"7e3d18"},body:JSON.stringify({sessionId:"7e3d18",runId:"post-fix",hypothesisId:"H1",location:"index.js:serverless-handler",message:"Root serverless handler invoked",data:{method:req?.method || null,url:req?.url || null},timestamp:Date.now()})}).catch(()=>{});
-  // #endregion
   await connectDB();
   return app(req, res);
 }
