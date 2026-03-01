@@ -84,6 +84,14 @@ if (process.env.NODE_ENV !== "production") {
   });
 }
 
+async function serverlessHandler(req, res) {
+  // #region agent log
+  fetch("http://127.0.0.1:7760/ingest/3f9c3337-dab9-4ddc-a905-eaadd0d240fd",{method:"POST",headers:{"Content-Type":"application/json","X-Debug-Session-Id":"7e3d18"},body:JSON.stringify({sessionId:"7e3d18",runId:"post-fix",hypothesisId:"H1",location:"index.js:serverless-handler",message:"Root serverless handler invoked",data:{method:req?.method || null,url:req?.url || null},timestamp:Date.now()})}).catch(()=>{});
+  // #endregion
+  await connectDB();
+  return app(req, res);
+}
+
 //thats for serverless functions (vercel)
 
 // var createError = require('http-errors');
@@ -118,4 +126,7 @@ if (process.env.NODE_ENV !== "production") {
 // app.use('/api', apiRouter);
 
 // app.listen(process.env.PORT || '3000', console.log("listining to port 3000"));
-module.exports = { app, connectDB };
+module.exports = serverlessHandler;
+module.exports.default = serverlessHandler;
+module.exports.app = app;
+module.exports.connectDB = connectDB;
