@@ -79,7 +79,7 @@ if (process.env.NODE_ENV !== "production") {
 }
 
 //thats for serverless functions (vercel)
-module.exports = { app, connectDB };
+
 // var createError = require('http-errors');
 // var express = require('express');
 // var path = require('path');
@@ -112,3 +112,4 @@ module.exports = { app, connectDB };
 // app.use('/api', apiRouter);
 
 // app.listen(process.env.PORT || '3000', console.log("listining to port 3000"));
+module.exports = { app, connectDB };
