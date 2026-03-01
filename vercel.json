@@ -1,8 +1,13 @@
 {
+  "functions": {
+    "api/index.js": {
+      "runtime": "nodejs24.x"
+    }
+  },
   "routes": [
     {
       "src": "/api/(.*)",
-      "dest": "/api/index.js"
+      "dest": "api/index.js"
     }
   ]
 }
