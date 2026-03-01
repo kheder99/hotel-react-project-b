@@ -15,7 +15,13 @@ let cached = global.mongoose;
 if (!cached) {
   cached = global.mongoose = { conn: null, promise: null };
 }
+// #region agent log
+fetch("http://127.0.0.1:7760/ingest/3f9c3337-dab9-4ddc-a905-eaadd0d240fd",{method:"POST",headers:{"Content-Type":"application/json","X-Debug-Session-Id":"7e3d18"},body:JSON.stringify({sessionId:"7e3d18",runId:"pre-fix",hypothesisId:"H1",location:"index.js:module-init",message:"Root module initialized",data:{nodeEnv:process.env.NODE_ENV || null,hasModuleExports:typeof module !== "undefined"},timestamp:Date.now()})}).catch(()=>{});
+// #endregion
 async function connectDB() {
+  // #region agent log
+  fetch("http://127.0.0.1:7760/ingest/3f9c3337-dab9-4ddc-a905-eaadd0d240fd",{method:"POST",headers:{"Content-Type":"application/json","X-Debug-Session-Id":"7e3d18"},body:JSON.stringify({sessionId:"7e3d18",runId:"pre-fix",hypothesisId:"H3",location:"index.js:connectDB-entry",message:"connectDB invoked",data:{hasCachedConn:Boolean(cached.conn),hasCachedPromise:Boolean(cached.promise)},timestamp:Date.now()})}).catch(()=>{});
+  // #endregion
   if (cached.conn) return cached.conn;
   if (!cached.promise) {
     cached.promise = mongoose
