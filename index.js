@@ -58,11 +58,21 @@ app.use(
   }),
 );
 
+app.get("/", (req, res) => {
+  // #region agent log
+  fetch("http://127.0.0.1:7760/ingest/3f9c3337-dab9-4ddc-a905-eaadd0d240fd",{method:"POST",headers:{"Content-Type":"application/json","X-Debug-Session-Id":"7e3d18"},body:JSON.stringify({sessionId:"7e3d18",runId:"post-fix",hypothesisId:"H5",location:"index.js:root-route",message:"Root route served",data:{method:req?.method || null,url:req?.originalUrl || req?.url || null},timestamp:Date.now()})}).catch(()=>{});
+  // #endregion
+  res.status(200).json({ message: "Hotels API is running", docs: "/api" });
+});
+
 app.use("/api", apiRouter);
 //thats for container
 // app.listen(process.env.PORT || "3000", console.log("listining to port 3000"));
 
 app.use((req, res, next) => {
+  // #region agent log
+  fetch("http://127.0.0.1:7760/ingest/3f9c3337-dab9-4ddc-a905-eaadd0d240fd",{method:"POST",headers:{"Content-Type":"application/json","X-Debug-Session-Id":"7e3d18"},body:JSON.stringify({sessionId:"7e3d18",runId:"post-fix",hypothesisId:"H7",location:"index.js:not-found-middleware",message:"Request reached 404 middleware",data:{method:req?.method || null,url:req?.originalUrl || req?.url || null},timestamp:Date.now()})}).catch(()=>{});
+  // #endregion
   res.status(404).send({ error: "Route not found" });
 });
 
